@@ -5,14 +5,14 @@ using namespace std;
 ifstream in;
 ofstream out;
 
-struct aboba
+struct arrays
 {
 	int* parent;
 	int* size;
 };
 class DSU
 {
-	aboba self;
+	arrays self;
 	int amount;
 	int counter;
 public:
