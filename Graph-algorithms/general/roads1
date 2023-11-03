@@ -14,11 +14,12 @@ class DSU
 {
 	aboba self;
 	int amount;
-	int counter=0;
+	int counter;
 public:
 	DSU(int nCities)
 	{
 		amount = nCities + 1;
+		counter = nCities;
 		self.size = new int[nCities+1];
 		self.parent = new int[nCities + 1];
 		for (int i = 1; i < nCities + 1; ++i)
@@ -32,24 +33,19 @@ public:
 		delete[] self.parent;
 		delete[] self.size;
 	}
-	void Union(int x, int y)
+	void UnionAndCount(int x, int y)
 	{
 		x = FindSet(x);
 		y = FindSet(y);
+		if (x != y)
+		{
+			counter--;
+		}
 			if (self.size[x] < self.size[y])
 				swap(x, y);
 				self.parent[y] = x;
 				self.size[x] += self.size[y];
-	}
-	void Count()
-	{
-		counter = 0;
-		for (int i = 1; i < amount; ++i)
-		{
-			if (i == self.parent[i])
-				counter++;
-		}
-		out << counter << endl;
+				out << counter << endl;
 	}
 private:
 	int FindSet(int x)
@@ -72,8 +68,7 @@ int main()
 	for (int i = 0; i < nRequests; ++i)
 	{
 		in >> x >> y;
-		country.Union(x, y);
-		country.Count();
+		country.UnionAndCount(x, y);
 	}
 	in.close();
 	out.close();
