@@ -8,8 +8,6 @@ ofstream out;
 int main()
 {
 	in.open("huffman.in");
-	//in.open("input.txt");
-	//out.open("output.txt");
 	out.open("huffman.out");
 	int n;
 	long long sum = 0, buffer, buffer2;
