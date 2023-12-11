@@ -1,0 +1,19 @@
+Дано бинарное поисковое дерево, в котором ключи вершин являются целыми числами в диапазоне от −2&31 до 2^31 − 1 включительно. Найдите сумму ключей всех вершин дерева.
+
+Формат входных данных
+Входной файл содержит последовательность чисел — ключи вершин в порядке добавления в дерево. Ключи задаются в формате по одному в строке.
+В поисковом дереве все ключи по определению уникальны, поэтому при попытке добавить в дерево ключ, который там уже есть, он игнорируется.
+
+Формат выходных данных
+Выведите единственное число — сумму ключей в построенном дереве.
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+Given a binary search tree in which the vertex keys are integers in the range −2^31 to 2^31−1 inclusive. Find the sum of the keys of all vertices of the tree.
+
+Input format
+The input file contains a sequence of numbers - the keys of the vertices in the order they were added to the tree. Keys are specified in the format one per line.
+In a search tree, all keys are by definition unique, so when you try to add a key that is already there to the tree, it is ignored.
+
+Output format
+Print a single number—the sum of the keys in the constructed tree.
