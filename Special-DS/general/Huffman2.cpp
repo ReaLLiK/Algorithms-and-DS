@@ -8,9 +8,7 @@ ofstream out;
 
 int main()
 {
-    //in.open("in.txt");
   in.open("huffman.in");
-    //out.open("out.txt");
   out.open("huffman.out");
     long long n;
     in >> n;
