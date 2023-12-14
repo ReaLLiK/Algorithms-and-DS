@@ -2,7 +2,6 @@
 #include <fstream>
 #include <queue>
 #include<tuple>
-#include<iostream>
 
 using namespace std;
 
@@ -21,7 +20,7 @@ struct Edge
 vector<Edge> flow_edges;
 vector<vector<int>> network;
 
-void resize(int size, int size2)
+void resize(int size)
 {
     network.resize(size);
 }
@@ -138,7 +137,6 @@ vector<int> restore_path(int t, vector<int>& pred)
 
     while (pred[t] != -1)
     {
-        cout << pred[t]<<' '<<t<<endl;
         int e = pred[t];
         path.push_back(e);
         t = source(e);
@@ -204,7 +202,6 @@ pair<int, int> busacker_gowen(int s, int t, int size, vector<int>& pred, vector<
         push_path(path, flow);
         result_flow += flow;
         result_cost += flow * pcost;
-        cout << endl << 1 << endl;
     }
     return { result_flow, result_cost };
 }
@@ -226,28 +223,37 @@ int main()
     out.open("output.txt");
     int NodesAmount, LinksAmount, first, second, price, start, finish, Target;
     in >> NodesAmount >> LinksAmount;
-    resize(2 * NodesAmount, LinksAmount);
+    resize(2 * NodesAmount);
     vector<int> dist(2 * NodesAmount, INT_MAX);
     vector<bool> processed(2 * NodesAmount, false);
     vector<vector<tuple<int, int, int>>> matrix(2 * NodesAmount);
     vector<Edge> flow_edges;
     vector<int> pred(2 * NodesAmount);
+    vector<bool> visited(NodesAmount, false);
     for (int i = 0; i < LinksAmount; ++i)
     {
         in >> first >> second >> price;
-        matrix[2 * first - 2].emplace_back(1, 0, 2 * first - 1);
-        matrix[2 * second - 2].emplace_back(1, 0, 2 * second - 1);
+        if (!visited[first - 1])
+            matrix[2 * first - 2].emplace_back(1, 0, 2 * first - 1);
+        if (!visited[second - 1])
+            matrix[2 * second - 2].emplace_back(1, 0, 2 * second - 1);
         matrix[2 * first - 1].emplace_back(1, price, 2 * second - 2);
         matrix[2 * second - 1].emplace_back(1, price, 2 * first - 2);
+        visited[first - 1] = true;
+        visited[second - 1] = true;
     }
     in >> start >> finish >> Target;
+    for (int i = 0; i < Target; ++i)
+    {
+        matrix[2 * start - 2].emplace_back(1, 0, 2 * start - 1);
+        matrix[2 * finish - 2].emplace_back(1, 0, 2 * finish - 1);
+    }
     pair<int, int> answer;
-    answer = min_cost_max_flow(2*start - 2, 2 * finish - 2, 2 * NodesAmount, matrix, dist, pred);
+    answer = min_cost_max_flow(2 * start - 2, 2 * finish - 2, 2 * NodesAmount, matrix, dist, pred);
     if (answer.first <= Target)
         out << "No\n" << answer.first;
     else
         out << "Yes\n" << answer.second;
-    out << endl << answer.first << ' ' << answer.second;
     in.close();
     out.close();
     return 0;
