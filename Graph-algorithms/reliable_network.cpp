@@ -2,6 +2,7 @@
 #include <fstream>
 #include <queue>
 #include<tuple>
+#include <iostream>
 
 using namespace std;
 
@@ -109,22 +110,35 @@ vector<int> network_edges()
 void find_path(int start, int size, vector<int>& dist, vector<int>& pred)
 {
     dist[start] = 0;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({ 0, start });
 
-    for (int i = 0; i < size - 1; ++i)
+    while (!pq.empty())
     {
-        for (int e : network_edges())
+        int v = pq.top().second;
+        int d = pq.top().first;
+        pq.pop();
+
+        if (d > dist[v])
         {
-            int v = source(e);
+            continue;
+        }
+
+        for (int e : network[v])
+        {
             int u = target(e);
             int c = cost(e);
 
-            if (dist[v] == INT_MAX || available(e) == 0) {
+            if (dist[v] == INT_MAX || available(e) == 0)
+            {
                 continue;
             }
 
-            if (dist[u] == INT_MAX || dist[u] > dist[v] + c) {
+            if (dist[u] == INT_MAX || dist[u] > dist[v] + c)
+            {
                 dist[u] = dist[v] + c;
                 pred[u] = e;
+                pq.push({ dist[u], u });
             }
         }
     }
@@ -141,7 +155,6 @@ vector<int> restore_path(int t, vector<int>& pred)
         path.push_back(e);
         t = source(e);
     }
-
     return path;
 }
 
@@ -183,7 +196,6 @@ pair<int, int> busacker_gowen(int s, int t, int size, vector<int>& pred, vector<
 {
     int result_flow = 0;
     int result_cost = 0;
-
     while (true)
     {
         for (int v = 0; v < size; ++v)
@@ -227,7 +239,6 @@ int main()
     vector<int> dist(2 * NodesAmount, INT_MAX);
     vector<bool> processed(2 * NodesAmount, false);
     vector<vector<tuple<int, int, int>>> matrix(2 * NodesAmount);
-    vector<Edge> flow_edges;
     vector<int> pred(2 * NodesAmount);
     vector<bool> visited(NodesAmount, false);
     for (int i = 0; i < LinksAmount; ++i)
